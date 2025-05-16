@@ -1,12 +1,11 @@
 import axios from 'axios';
 
-// L'API UBeer est accessible via le proxy configuré dans package.json
-// eslint-disable-next-line no-unused-vars
+// URL directe de l'API UBeer
 const API_URL = 'https://ubeer-mpkw.onrender.com';
 
-// Configuration de l'API client utilisant le proxy local
+// Configuration de l'API client utilisant l'URL directe
 const apiClient = axios.create({
-  baseURL: '/api', // Utilisation du proxy défini dans setupProxy.js
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },

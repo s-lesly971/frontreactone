@@ -37,7 +37,13 @@ const BeerService = {
   getAllBeers: async () => {
     try {
       const response = await apiClient.get('/beers');
-      return response.data;
+      // Vérifie que la réponse est bien un tableau
+      if (Array.isArray(response.data)) {
+        return response.data;
+      } else {
+        console.error('API response is not an array:', response.data);
+        return FALLBACK_BEERS;
+      }
     } catch (error) {
       console.error('Error fetching beers:', error);
       // En cas d'erreur (CORS ou autre), on utilise les données de secours

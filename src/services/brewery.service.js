@@ -1,14 +1,22 @@
 import apiClient from './api.service';
 
+const FALLBACK_BREWERIES = [];
+
 const BreweryService = {
   // Get all breweries
   getAllBreweries: async () => {
     try {
       const response = await apiClient.get('/brewery');
-      return response.data;
+      // Vérifie que la réponse est bien un tableau
+      if (Array.isArray(response.data)) {
+        return response.data;
+      } else {
+        console.error('API response is not an array:', response.data);
+        return FALLBACK_BREWERIES;
+      }
     } catch (error) {
       console.error('Error fetching breweries:', error);
-      throw error;
+      return FALLBACK_BREWERIES;
     }
   },
 
