@@ -1,0 +1,48 @@
+<!-- Ceci est un fichier SVG sauvegardé avec l'extension .jpg pour correspondre au chemin demandé -->
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0e0e0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#grad1)" />
+  <g transform="translate(100, 100)">
+    <!-- Rangée de bouteilles de bière -->
+    <g transform="translate(0, 0)">
+      <path d="M20,50 L40,50 L45,350 L15,350 L20,50 Z" fill="#8e44ad" />
+      <path d="M25,0 L35,0 L40,50 L20,50 L25,0 Z" fill="#7d3c98" />
+      <ellipse cx="30" cy="350" rx="15" ry="5" fill="#7d3c98" />
+    </g>
+    <g transform="translate(100, 0)">
+      <path d="M20,50 L40,50 L45,350 L15,350 L20,50 Z" fill="#d35400" />
+      <path d="M25,0 L35,0 L40,50 L20,50 L25,0 Z" fill="#a04000" />
+      <ellipse cx="30" cy="350" rx="15" ry="5" fill="#a04000" />
+    </g>
+    <g transform="translate(200, 0)">
+      <path d="M20,50 L40,50 L45,350 L15,350 L20,50 Z" fill="#27ae60" />
+      <path d="M25,0 L35,0 L40,50 L20,50 L25,0 Z" fill="#1e8449" />
+      <ellipse cx="30" cy="350" rx="15" ry="5" fill="#1e8449" />
+    </g>
+    <g transform="translate(300, 0)">
+      <path d="M20,50 L40,50 L45,350 L15,350 L20,50 Z" fill="#e74c3c" />
+      <path d="M25,0 L35,0 L40,50 L20,50 L25,0 Z" fill="#c0392b" />
+      <ellipse cx="30" cy="350" rx="15" ry="5" fill="#c0392b" />
+    </g>
+    <g transform="translate(400, 0)">
+      <path d="M20,50 L40,50 L45,350 L15,350 L20,50 Z" fill="#f1c40f" />
+      <path d="M25,0 L35,0 L40,50 L20,50 L25,0 Z" fill="#d4ac0d" />
+      <ellipse cx="30" cy="350" rx="15" ry="5" fill="#d4ac0d" />
+    </g>
+    
+    <!-- Un verre de bière à côté -->
+    <g transform="translate(500, 250)">
+      <path d="M0,0 L80,0 L60,100 L20,100 Z" fill="#f5d76e" opacity="0.7" />
+      <path d="M20,100 L60,100 L55,130 L25,130 Z" fill="#f39c12" />
+      <path d="M25,130 L55,130 L50,150 L30,150 Z" fill="#f1c40f" />
+      <ellipse cx="40" cy="30" rx="30" ry="5" fill="white" opacity="0.6" />
+    </g>
+  </g>
+  <text x="400" y="500" font-family="Arial" font-size="32" text-anchor="middle" fill="#333" font-weight="bold">À propos de UBeer</text>
+  <text x="400" y="540" font-family="Arial" font-size="16" text-anchor="middle" fill="#555">Découvrez notre sélection de bières artisanales</text>
+</svg>

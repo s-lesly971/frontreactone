@@ -1,0 +1,21 @@
+<!-- Ceci est un fichier SVG sauvegardé avec l'extension .jpg pour correspondre au chemin demandé -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f39c12;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e67e22;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="600" fill="url(#grad1)" />
+  <g transform="translate(500, 250)">
+    <path d="M75,40 L55,40 L55,180 L75,180 L75,40 Z" fill="#f1c40f" />
+    <path d="M25,40 L45,40 L45,180 L25,180 L25,40 Z" fill="#f1c40f" />
+    <path d="M25,0 C25,0 -25,20 -25,40 L-25,180 C-25,200 25,220 25,220 L75,220 C75,220 125,200 125,180 L125,40 C125,20 75,0 75,0 L25,0 Z" fill="#f5d76e" />
+    <path d="M25,240 L75,240 L85,280 L15,280 L25,240 Z" fill="#f39c12" />
+    <ellipse cx="50" cy="100" rx="50" ry="25" fill="white" opacity="0.6" />
+    <circle cx="30" cy="80" r="8" fill="white" />
+    <circle cx="50" cy="90" r="6" fill="white" />
+    <circle cx="70" cy="75" r="10" fill="white" />
+  </g>
+  <text x="600" y="480" font-family="Arial" font-size="72" text-anchor="middle" fill="white" font-weight="bold">UBeer - La bière artisanale</text>
+</svg>

@@ -1,0 +1,119 @@
+/* UBeer Custom CSS */
+
+/* General Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+}
+
+/* Header Styles */
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Hero Section */
+.hero-section {
+  background-color: #f8f9fa;
+  padding: 80px 0;
+  margin-bottom: 40px;
+}
+
+/* Card Styles */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Beer Details Page */
+.beer-details {
+  margin-top: 40px;
+}
+
+.beer-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #28a745;
+  margin-bottom: 20px;
+}
+
+/* Cart Styles */
+.cart-item {
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  max-width: 120px;
+}
+
+/* Footer Styles */
+footer {
+  background-color: #343a40;
+  color: white;
+  padding: 40px 0 20px;
+  margin-top: 60px;
+}
+
+footer a {
+  color: #f8f9fa;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #17a2b8;
+  text-decoration: underline;
+}
+
+/* Custom Button Colors */
+.btn-beer-primary {
+  background-color: #f39c12;
+  border-color: #f39c12;
+  color: white;
+}
+
+.btn-beer-primary:hover {
+  background-color: #e67e22;
+  border-color: #e67e22;
+  color: white;
+}
+
+/* Form Styles */
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation for Alerts */
+.alert {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
