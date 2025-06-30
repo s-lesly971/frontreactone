@@ -1,9 +1,10 @@
-
 import { loadStripe } from '@stripe/stripe-js';
+import apiClient from './api.service';
 
+// Configuration Stripe - Utiliser les variables d'environnement
+const STRIPE_PUBLIC_KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY || 'pk_test_51RVqRcQgNYtRjntdkW6KPPxcFrazQpwf6uMsfEDjgEbyBGRp1GqLoz5NJUqeZ6elj2ocnWUBV0Pqrr9eo8c4EsQr00WcS2f5Rk';
 
-const STRIPE_PUBLIC_KEY = 'pk_test_TYooMQauvdEDq54NiTphI7jx'; 
-
+// Instance Stripe
 let stripePromise = null;
 const getStripe = () => {
   if (!stripePromise) {
@@ -14,64 +15,135 @@ const getStripe = () => {
 
 const StripeService = {
   
-  createCheckoutSession: async (cartItems, beers) => {
+  createCheckoutSession: async (cartItems, customerInfo = {}) => {
     try {
+      console.log('🛒 Création session Stripe via API backend:', { cartItems, customerInfo });
       
-      const lineItems = cartItems.map(item => {
-        const beer = beers.find(b => b.id === item.beer_id);
-        return {
-          price_data: {
-            currency: 'eur',
-            product_data: {
-              name: beer ? beer.beer : `Bière #${item.beer_id}`,
-              images: beer && beer.imageUrl ? [beer.imageUrl] : [],
-            },
-            unit_amount: beer ? Math.round(beer.price * 100) : 0, 
-          },
-          quantity: item.quantity,
-        };
-      });
-
-
-      console.log('Simulation de création de session Stripe avec:', lineItems);
-      return {
-        sessionId: 'session_simulated_' + Math.random().toString(36).substring(2, 15),
-        success: true
+      const payload = {
+        orderId: Date.now(),
+        items: cartItems.map(item => ({
+          name: item.beerName,
+          amount: Math.round(item.price * 100),
+          quantity: item.quantity
+        }))
       };
+      
+      console.log(' Payload envoyé à l\'API backend:', payload);
+      console.log(' URL API:', apiClient.defaults.baseURL + '/stripe/checkout');
+      
+      // Appel à l'API backend
+      const response = await apiClient.post('/stripe/checkout', payload);
+      
+      console.log(' Réponse complète API:', response);
+      console.log('& Data reçue:', response.data);
+      
+      // Vérifier différents formats de réponse possibles
+      const responseData = response.data;
+      const sessionUrl = responseData.url || responseData.sessionUrl || responseData.checkout_url;
+      const sessionId = responseData.sessionId || responseData.id || responseData.session_id;
+      
+      if (sessionUrl) {
+        console.log('🎯 URL Stripe trouvée:', sessionUrl);
+        return {
+          success: true,
+          sessionId: sessionId,
+          url: sessionUrl
+        };
+      } else {
+        console.error('❌ Aucune URL de checkout dans la réponse:', responseData);
+        throw new Error('URL de checkout manquante dans la réponse API');
+      }
+      
     } catch (error) {
-      console.error('Erreur lors de la création de la session Stripe:', error);
-      throw error;
+      console.error('❌ Erreur création session via API backend:', error);
+      
+      // Logs détaillés pour debug
+      if (error.response) {
+        console.error('🔍 Status HTTP:', error.response.status);
+        console.error('🔍 Headers:', error.response.headers);
+        console.error('🔍 Data erreur:', error.response.data);
+        console.error('🔍 Config requête:', error.config);
+      } else if (error.request) {
+        console.error('🔍 Pas de réponse reçue:', error.request);
+      } else {
+        console.error('🔍 Erreur config:', error.message);
+      }
+      
+      return {
+        success: false,
+        error: error.response?.data?.message || error.message || 'Erreur lors de la création de la session de paiement'
+      };
     }
   },
 
-  // Rediriger vers Checkout
+  // Rediriger vers Checkout Stripe
   redirectToCheckout: async (sessionId) => {
     try {
       const stripe = await getStripe();
       
-      // Simulation d'une redirection réussie/échouée (pour la démo)
-      const simulationSuccess = true; // Changer à false pour tester l'erreur
-
-      console.log('Redirection vers Stripe Checkout avec sessionId:', sessionId);
-            
-      if (simulationSuccess) {
+      console.log('🔄 Redirection vers Stripe Checkout:', sessionId);
+      
+      // Mode développement - simulation
+      if (sessionId.startsWith('session_dev_')) {
+        console.log('🔧 Mode dév - Simulation redirection Stripe');
+        window.location.href = '/payment/success?session_id=' + sessionId;
         return { success: true };
-      } else {
-        return { error: 'Erreur de redirection vers Stripe' };
       }
+      
+      // Redirection réelle vers Stripe
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+      
+      if (error) {
+        console.error('❌ Erreur redirection Stripe:', error);
+        return { error: error.message };
+      }
+      
+      return { success: true };
     } catch (error) {
-      console.error('Erreur lors de la redirection vers Stripe Checkout:', error);
+      console.error('❌ Erreur redirection Stripe Checkout:', error);
       throw error;
     }
   },
 
-  handlePaymentResult: async (sessionId) => {
+  // Vérifier le résultat du paiement
+  verifyPayment: async (sessionId) => {
+    try {
+      console.log('🔍 Vérification paiement session:', sessionId);
+      
+      // Mode développement
+      if (sessionId.startsWith('session_dev_')) {
+        return {
+          success: true,
+          orderId: 'order_dev_' + Date.now(),
+          paymentStatus: 'paid',
+          isDevelopment: true
+        };
+      }
+      
+      // Appel API pour vérifier le paiement
+      const response = await apiClient.get(`/stripe/verify-payment/${sessionId}`);
+      
+      return {
+        success: response.data.success,
+        orderId: response.data.orderId,
+        paymentStatus: response.data.paymentStatus,
+        customerEmail: response.data.customerEmail
+      };
+    } catch (error) {
+      console.error('❌ Erreur vérification paiement:', error);
+      throw error;
+    }
+  },
 
-    console.log('Vérification du résultat de paiement pour la session:', sessionId);
-    return {
-      success: true,
-      orderId: 'order_' + Math.random().toString(36).substring(2, 10)
-    };
+  // Récupérer les détails d'une session
+  getSessionDetails: async (sessionId) => {
+    try {
+      const response = await apiClient.get(`/stripe/session/${sessionId}`);
+      return response.data;
+    } catch (error) {
+      console.error('❌ Erreur récupération session:', error);
+      throw error;
+    }
   }
 };
 

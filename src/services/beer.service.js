@@ -83,7 +83,7 @@ const BeerService = {
   // Update an existing beer
   updateBeer: async (id, beerData) => {
     try {
-      const response = await apiClient.put(`/beers/${id}`, beerData);
+      const response = await apiClient.patch(`/beers/${id}`, beerData);
       return response.data;
     } catch (error) {
       console.error(`Error updating beer with ID ${id}:`, error);

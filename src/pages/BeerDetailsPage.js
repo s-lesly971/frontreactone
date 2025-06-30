@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Container, Row, Col, Button, Image, Card, Spinner, Alert, Form } from 'react-bootstrap';
+import { Container, Row, Col, Button, Image, Card, Spinner, Alert, Form, Toast, ToastContainer } from 'react-bootstrap';
 import BeerService from '../services/beer.service';
 import BreweryService from '../services/brewery.service';
 import CartService from '../services/cart.service';
@@ -15,7 +15,11 @@ const BeerDetailsPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [addingToCart, setAddingToCart] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [isAdding, setIsAdding] = useState(false);
+  
+  // Check if user is authenticated
   const isAuthenticated = UserService.isAuthenticated();
 
   useEffect(() => {
@@ -48,28 +52,27 @@ const BeerDetailsPage = () => {
   };
 
   const handleAddToCart = async () => {
-    if (!isAuthenticated) {
-      // Redirect to login if not authenticated
-      navigate('/login', { state: { from: `/beers/${id}` } });
-      return;
-    }
-
     try {
-      setAddingToCart(true);
-      // In a real application, you'd get the user ID from the auth state
-      const userId = 1; // Placeholder
+      if (!isAuthenticated) {
+        navigate('/login', { state: { from: `/beers/${id}` } });
+        return;
+      }
+      
+      setIsAdding(true);
+      const userId = 1; // Dans une vraie application, cet ID viendrait de l'authentification
       
       await CartService.addToCart({
         user_id: userId,
-        beer_id: parseInt(id),
+        beer_id: parseInt(beer.id),
         quantity: quantity
       });
       
-      setAddingToCart(false);
-      alert(`${beer.beer} a été ajouté à votre panier !`);
+      setToastMessage(`${beer.beer} a été ajouté à votre panier !`);
+      setShowToast(true);
+      setIsAdding(false);
     } catch (err) {
       setError('Une erreur est survenue lors de l\'ajout au panier.');
-      setAddingToCart(false);
+      setIsAdding(false);
       console.error('Error adding to cart:', err);
     }
   };
@@ -126,6 +129,21 @@ const BeerDetailsPage = () => {
 
   return (
     <Container className="my-5">
+      {/* Toast de notification */}
+      <ToastContainer position="bottom-end" className="p-3" style={{ zIndex: 1 }}>
+        <Toast 
+          show={showToast} 
+          onClose={() => setShowToast(false)} 
+          delay={3000} 
+          autohide 
+          bg="success"
+        >
+          <Toast.Header closeButton>
+            <strong className="me-auto">Panier</strong>
+          </Toast.Header>
+          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
       <Link to="/beers" className="btn btn-outline-secondary mb-4">
         &larr; Retour aux bières
       </Link>
@@ -184,35 +202,35 @@ const BeerDetailsPage = () => {
                 size="lg" 
                 className="w-100 mb-2"
                 onClick={handleAddToCart}
-                disabled={addingToCart}
+                disabled={isAdding}
               >
-                {addingToCart ? (
+                {isAdding ? (
                   <>
                     <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
                     <span className="ms-2">Ajout en cours...</span>
                   </>
                 ) : (
-                  'Ajouter au panier'
+                  <>
+                    Ajouter au panier
+                  </>
                 )}
               </Button>
               
               <p className="text-muted mb-0">
-                {isAuthenticated ? 'Livraison gratuite à partir de 50€' : 'Connectez-vous pour ajouter au panier'}
+                Livraison gratuite à partir de 50€
               </p>
             </Card.Body>
           </Card>
           
           {/* Admin actions */}
-          {isAuthenticated && (
-            <div className="d-flex mt-4">
-              <Link to={`/beers/edit/${beer.id}`} className="me-2">
-                <Button variant="outline-primary">Modifier</Button>
-              </Link>
-              <Button variant="outline-danger" onClick={handleDeleteBeer}>
-                Supprimer
-              </Button>
-            </div>
-          )}
+          <div className="d-flex mt-4">
+            <Link to={`/beers/edit/${beer.id}`} className="me-2">
+              <Button variant="outline-primary">Modifier</Button>
+            </Link>
+            <Button variant="outline-danger" onClick={handleDeleteBeer}>
+              Supprimer
+            </Button>
+          </div>
         </Col>
       </Row>
       

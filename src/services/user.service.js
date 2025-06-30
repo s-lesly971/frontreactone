@@ -74,12 +74,45 @@ const UserService = {
 
   // Logout
   logout: () => {
-    localStorage.removeItem('token');
+    UserService.clearAuth();
   },
 
   // Check if user is authenticated
   isAuthenticated: () => {
-    return localStorage.getItem('token') !== null;
+    const token = localStorage.getItem('ubeer_token');
+    return !!token;
+  },
+
+  // Get current user from localStorage
+  getCurrentUser: () => {
+    try {
+      const user = localStorage.getItem('ubeer_user');
+      return user ? JSON.parse(user) : null;
+    } catch (error) {
+      console.error('Erreur parsing user:', error);
+      return null;
+    }
+  },
+
+  // Set current user in localStorage
+  setCurrentUser: (user) => {
+    localStorage.setItem('ubeer_user', JSON.stringify(user));
+  },
+
+  // Set auth token
+  setToken: (token) => {
+    localStorage.setItem('ubeer_token', token);
+  },
+
+  // Get auth token
+  getToken: () => {
+    return localStorage.getItem('ubeer_token');
+  },
+
+  // Clear auth data
+  clearAuth: () => {
+    localStorage.removeItem('ubeer_token');
+    localStorage.removeItem('ubeer_user');
   }
 };
 

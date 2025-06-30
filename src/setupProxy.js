@@ -7,7 +7,7 @@ module.exports = function(app) {
       target: 'https://ubeer-mpkw.onrender.com',
       changeOrigin: true,
       pathRewrite: {
-        '^/api': '/' // Enlève le préfixe '/api' des requêtes
+        '^/api': '/v1' // Redirige /api vers /v1
       },
       onProxyRes: function(proxyRes, req, res) {
         // Ajouter des logs pour faciliter le débogage

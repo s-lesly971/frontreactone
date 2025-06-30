@@ -40,6 +40,8 @@ const Header = () => {
             <Nav.Link as={Link} to="/beers">Bières</Nav.Link>
             <Nav.Link as={Link} to="/breweries">Brasseries</Nav.Link>
             <Nav.Link as={Link} to="/api-test">Test API</Nav.Link>
+            <Nav.Link as={Link} to="/test">🧪 Test</Nav.Link>
+            <Nav.Link as={Link} to="/cart">🛒 Panier</Nav.Link>
           </Nav>
           <Nav>
             {isAuthenticated ? (

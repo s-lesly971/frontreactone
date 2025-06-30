@@ -16,10 +16,14 @@ import BeerDetailsPage from './pages/BeerDetailsPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import CartPage from './pages/CartPage';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import ApiTestPage from './pages/ApiTestPage';
 
 // Auth related
 import UserService from './services/user.service';
+
+// Context
+import { CartProvider } from './context/CartContext';
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
@@ -35,7 +39,8 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
-    <Router>
+    <CartProvider>
+      <Router>
       <div className="d-flex flex-column min-vh-100">
         <Header />
         
@@ -48,16 +53,10 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/api-test" element={<ApiTestPage />} />
+            <Route path="/payment/success" element={<PaymentSuccessPage />} />
             
-            {/* Protected routes */}
-            <Route 
-              path="/cart" 
-              element={
-                <ProtectedRoute>
-                  <CartPage />
-                </ProtectedRoute>
-              } 
-            />
+            {/* Cart route - temporairement public pour les tests */}
+            <Route path="/cart" element={<CartPage />} />
             
             {/* Catch all - redirect to home */}
             <Route path="*" element={<Navigate to="/" replace />} />
@@ -66,7 +65,8 @@ function App() {
         
         <Footer />
       </div>
-    </Router>
+      </Router>
+    </CartProvider>
   );
 }
 

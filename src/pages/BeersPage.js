@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button, Form, Spinner, Alert } from 'react-b
 import { Link } from 'react-router-dom';
 import BeerService from '../services/beer.service';
 import BreweryService from '../services/brewery.service';
+import { useCart } from '../context/CartContext';
 
 const BeersPage = () => {
   const [beers, setBeers] = useState([]);
@@ -11,6 +12,9 @@ const BeersPage = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBrewery, setSelectedBrewery] = useState('');
+  
+  // Hook du panier
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -141,11 +145,12 @@ const BeersPage = () => {
                       variant="outline-success" 
                       className="w-100"
                       onClick={() => {
-                        // Here you would add to cart functionality
-                        alert(`Ajout de ${beer.beer} au panier`);
+                        console.log('🛒 Ajout au panier depuis BeersPage:', beer);
+                        addToCart(beer);
+                        alert(`✅ ${beer.beer} ajouté au panier !`);
                       }}
                     >
-                      Ajouter au panier
+                      🛒 Ajouter au panier
                     </Button>
                   </div>
                 </Card.Body>

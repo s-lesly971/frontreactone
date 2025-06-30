@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// URL directe de l'API UBeer
-const API_URL = 'https://ubeer-mpkw.onrender.com';
+// URL directe de l'API - Le proxy ne fonctionne pas correctement
+const API_URL = 'https://ubeer-mpkw.onrender.com/v1';
 
-// Configuration de l'API client utilisant l'URL directe
+// Configuration de l'API client
 const apiClient = axios.create({
   baseURL: API_URL,
   headers: {
