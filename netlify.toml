@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "CI=false npm run build"
   publish = "build"
 
 # Règle de redirection pour React Router (SPA)
@@ -7,6 +7,10 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Variables d'environnement pour le build
+[build.environment]
+  CI = "false"
 
 # Configuration des en-têtes pour gérer CORS
 [[headers]]
