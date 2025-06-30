@@ -69,8 +69,8 @@ const CartPage = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {cartItems.map((item) => (
-                        <tr key={item.beerId || item.id || Date.now()}>
+                      {cartItems. map((item) => (
+                        <tr key={item.id}>
                           <td>
                             <div className="d-flex align-items-center">
                               {item.image_url && (

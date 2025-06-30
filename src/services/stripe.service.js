@@ -15,27 +15,33 @@ const getStripe = () => {
 
 const StripeService = {
   
+  // Créer une session de checkout via l'API backend
   createCheckoutSession: async (cartItems, customerInfo = {}) => {
     try {
       console.log('🛒 Création session Stripe via API backend:', { cartItems, customerInfo });
       
+      // Préparation du payload pour l'API backend (format attendu)
       const payload = {
-        orderId: Date.now(),
+        orderId: Date.now(), // ID unique pour la commande
         items: cartItems.map(item => ({
-          name: item.beerName,
-          amount: Math.round(item.price * 100),
+          name: item.beerName || item.name,
+          amount: Math.round((item.price || 0) * 100), // Prix en centimes
           quantity: item.quantity
-        }))
+        })),
+        customer: customerInfo,
+        success_url: `${window.location.origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${window.location.origin}/cart`,
+        currency: 'eur'
       };
       
-      console.log(' Payload envoyé à l\'API backend:', payload);
-      console.log(' URL API:', apiClient.defaults.baseURL + '/stripe/checkout');
+      console.log('📤 Payload envoyé à l\'API backend:', payload);
+      console.log('🌐 URL API:', apiClient.defaults.baseURL + '/stripe/checkout');
       
       // Appel à l'API backend
       const response = await apiClient.post('/stripe/checkout', payload);
       
-      console.log(' Réponse complète API:', response);
-      console.log('& Data reçue:', response.data);
+      console.log('✅ Réponse complète API:', response);
+      console.log('📦 Data reçue:', response.data);
       
       // Vérifier différents formats de réponse possibles
       const responseData = response.data;

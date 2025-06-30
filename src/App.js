@@ -18,6 +18,7 @@ import RegisterPage from './pages/RegisterPage';
 import CartPage from './pages/CartPage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import ApiTestPage from './pages/ApiTestPage';
+import TestPage from './pages/TestPage';
 
 // Auth related
 import UserService from './services/user.service';
@@ -53,6 +54,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/api-test" element={<ApiTestPage />} />
+            <Route path="/test" element={<TestPage />} />
             <Route path="/payment/success" element={<PaymentSuccessPage />} />
             
             {/* Cart route - temporairement public pour les tests */}
